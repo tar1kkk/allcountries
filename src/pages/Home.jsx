@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useNavigate ,useParams } from 'react-router-dom';
 import axios from 'axios';
 import Controls from '../components/Controls';
 import List from '../components/List';
 import Card from '../components/Card';
 import {ALL_COUNTRIES} from '../config';
 
-function Home(props) {
-	const [countries,setCountries] = useState([]);
+function Home({setCountries,countries}) {
+
+	const history = useNavigate();
 
 	const fetchReq = async()=> {
 	  const res = await axios.get(ALL_COUNTRIES);
@@ -15,7 +17,9 @@ function Home(props) {
 	}
  
 	useEffect(()=>{
-	  fetchReq();
+		if(!countries.length){
+			fetchReq();
+		}
 	},[])
 
 	return (
@@ -41,7 +45,7 @@ function Home(props) {
 				},
 			 ],
 		  };
-			 return <Card key={c.name} {...countryInfo}/>
+			 return <Card key={c.name} onClick={()=> history(`/country/${c.name.common}`)} {...countryInfo}/>
 		  })}
 		</List>
 		</>

@@ -1,4 +1,5 @@
 import './App.css';
+import { useState } from 'react';
 import Header from './components/Header';
 import Main from './components/Main';
 import axios from 'axios';
@@ -10,7 +11,7 @@ import NotFound from './pages/NotFound';
 
 
 function App() {
- 
+  const [countries,setCountries] = useState([]);
 
 
   return (
@@ -18,7 +19,7 @@ function App() {
       <Header/>
       <Main>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home countries={countries} setCountries={setCountries}/>} />
         <Route path="/country/:name" element={<Details />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

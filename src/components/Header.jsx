@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {Container} from './Container';
 import { IoMoon, IoMoonOutline } from 'react-icons/io5';
-
+import { Link } from 'react-router-dom';
 
 function Header() {
 	const [theme, setTheme] = useState('light');
@@ -26,7 +26,7 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 2rem 0;
 `;
-const Title = styled.a.attrs({
+const Title = styled(Link).attrs({
 	to: '/',
  })`
 	color: var(--colors-text);
@@ -34,7 +34,7 @@ const Title = styled.a.attrs({
 	text-decoration: none;
 	font-weight: var(--fw-bold);
  `;
-
+ 
 
 const ModeSwitcher = styled.div`
   color: var(--colors-text);
