@@ -7,26 +7,46 @@ import Card from '../components/Card';
 import {ALL_COUNTRIES} from '../config';
 
 function Home({setCountries,countries}) {
+	const [filtredCoutries,setFilteredCounrties] = useState(countries);
+	console.log(filtredCoutries);
+
+	const handleSearch=(search,region)=>{
+		let data = [...countries];
+
+		if(region){
+			data = data.filter(c=> c.region.includes(region));
+		}
+
+		if(search){
+			data = data.filter(c=> c.name.common.toLowerCase().includes(search.toLowerCase()));
+		}
+
+		setFilteredCounrties(data);
+	}
 
 	const history = useNavigate();
 
 	const fetchReq = async()=> {
 	  const res = await axios.get(ALL_COUNTRIES);
 	  setCountries(res.data);
-	  console.log(res.data);
 	}
  
 	useEffect(()=>{
 		if(!countries.length){
 			fetchReq();
 		}
-	},[])
+		  // eslint-disable-next-line
+	},[]);
+	useEffect(() => {
+		handleSearch();
+		// eslint-disable-next-line
+	 }, [countries]);
 
 	return (
 		<>
-		<Controls/>
+		<Controls onSearch={handleSearch}/>
 		<List>
-		  {countries.map((c)=>{
+		  {filtredCoutries.map((c)=>{
 			 const countryInfo = {
 			 img: c.flags.png,
 			 name: c.name.common,
