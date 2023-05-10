@@ -27,7 +27,7 @@ function Details() {
 			<Button onClick={()=> navigate(-1)}>
 				<IoArrowBack/> Back
 			</Button>
-			{country && <Info {...country} named={name}/>}
+			{country && <Info {...country} navigate={navigate} named={name}/>}
 		</div>
 	);
 }

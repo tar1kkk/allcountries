@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import { filterByCode } from '../config';
+
 
 const Wrapper = styled.section`
   margin-top: 3rem;
@@ -81,7 +84,10 @@ const Tag = styled.span`
   cursor: pointer;
 `;
 
+
+
 function Info(props) {
+
 	const {
 		name,
 		named,
@@ -96,7 +102,15 @@ function Info(props) {
 		languages = [],
 		borders = [],
 		push,
+		navigate
 	} = props;
+
+	const [neighbors,setNeighbors] = useState([]);
+
+	useEffect(()=>{
+		axios.get(filterByCode(borders)).then(({data})=> setNeighbors(data.map(c=> c.name.common)));
+	},[borders]);
+
 	return (
 		<Wrapper>
 			<InfoImage src={flags.png} alt={named}/>
@@ -141,6 +155,19 @@ function Info(props) {
 					</ListItem>
 					</List>
 				</ListGroup>
+				<Meta>
+				<b>Border Countries</b>
+				{!borders.length ? (
+					<span>There is no border countires</span>	
+				) : (
+					<TagGroup>
+						{neighbors.map(b => (
+							<Tag key={b} onClick={()=> navigate(`/country/${b}`)}>{b}</Tag>
+						))}
+					</TagGroup>
+				)
+			}
+				</Meta>
 			</div>
 		</Wrapper>
 	);
